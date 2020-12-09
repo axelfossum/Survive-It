@@ -1,0 +1,208 @@
+#startButton {
+	position: absolute;
+   top: 200px;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   -ms-transform: translate(-50%, -50%);
+	background-color:MediumSeaGreen;
+	display:inline-block;
+	border: none;
+	font-size:24px;
+	padding: 20px;
+	padding-left:45px;
+	padding-right:45px;
+	font-family: Lucida Console;
+	
+}
+
+#newBackground{
+	position: absolute;
+  top: 200px;
+  left: 240px;
+	background-color:Grey;
+	border: none;
+	padding: 15px;
+	padding-bottom:30px;
+}
+
+#newCharacter{
+	position: absolute;
+  top: 200px;
+  left: 430px;
+	background-color:Grey;
+	border: none;
+	padding: 15px;
+	padding-bottom:30px;
+}
+
+#startButton:hover {
+color: #898989;	
+}
+
+#shopButton:hover {
+color: #898989;	
+}
+#optionsButton:hover {
+color: #898989;	
+}
+#jumpButton:hover {
+color: #898989;	
+
+}#backButton:hover {
+color: #898989;	
+}
+
+}#menuButton:hover {
+color: #898989;	
+}
+
+}#restartButton:hover {
+color: #898989;	
+}
+
+#shopButton {
+  position: absolute;
+  top: 300px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+	background-color:MediumSeaGreen;
+	border: none;
+	font-size:24px;
+	padding: 20px;
+	padding-left:50px;
+	padding-right:50px;
+	font-family: Lucida Console;
+}
+#optionsButton {
+  position: absolute;
+  top: 400px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+	background-color:MediumSeaGreen;
+	border: none;
+	font-size:24px;
+	padding: 20px;
+	padding-left:30px;
+	padding-right:30px;
+	font-family: Lucida Console;
+}
+#jumpButton {
+  position: absolute;
+  top: 300px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+	border: none;
+	font-size:24px;
+	padding: 20px;
+	padding-left:30px;
+	padding-right:30px;
+	background-color:MediumSeaGreen;
+	font-family: Lucida Console;
+}
+
+
+#backButton {
+  position: absolute;
+  top: 400px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+	background-color:MediumSeaGreen;
+	border: none;
+	font-size:24px;
+	padding: 20px;
+	padding-left:30px;
+	padding-right:30px;
+	font-family: Lucida Console;
+}
+
+#menuButton {
+position: absolute;
+  top: 450px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+	background-color:MediumSeaGreen;
+	border: none;
+	font-size:24px;
+	padding: 20px;
+	padding-left:40px;
+	padding-right:40px;
+	font-family: Lucida Console;
+}
+#restartButton {
+	position: absolute;
+  top: 350px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+	border: none;
+	background-color:MediumSeaGreen;
+	font-size:24px;
+	padding: 20px;
+	font-family: Lucida Console;
+}
+
+#container {
+	height: 600px;
+	width: 800px;
+	position: relative;
+}
+
+#container {
+	height: 600px;
+	width: 800px;
+	position: relative;
+}
+#achievement1{
+	height: 80px;
+	width: 500px;
+	position: absolute;
+	top:0px;
+	left:150px;
+	background-color:MediumSeaGreen;
+}
+
+#achievement2{
+	height: 80px;
+	width: 500px;
+	position: absolute;
+	left:150px;
+	top:0px;
+	background-color:MediumSeaGreen;
+}
+#achievementPic1{
+	height: 50px;
+	width: 50px;
+	position: absolute;
+	left: 400px;
+	top: 20%;
+
+}
+#achievementText1{
+	position: absolute;
+	font-family: Lucida Console;
+	font-size:14px;
+	top: 35%;
+	left:70px;
+
+}
+#gameCanvas{
+	position: relative;
+}
+
+#gameText {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+border:none;	
+margin: none;
+font-size: 40px;
+font-family: Lucida Console;
+}
+

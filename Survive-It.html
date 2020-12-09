@@ -1,0 +1,469 @@
+<html>
+<head>
+	<link rel="stylesheet" href="Style.css">
+	<title>Survive It!</title> 
+	</head>
+	<div id="container">
+<h1 id="gameText">Survive It!</h1>
+<img id="startBakgrund" height="600" width="800" src="images/background.png">
+<canvas id="gameCanvas" style="display: none;" width ="800" height="600"></canvas>
+<button id="startButton" class="firstScreenButtons" type="button"
+onclick="canvasstart()">Start</button>
+	<button id ="shopButton" class="firstScreenButtons" type="button"
+	onclick="openShop()">Shop</button>
+		<button id = "optionsButton" class="firstScreenButtons" type="button"
+		onclick="options()">Options</button>
+			<button id = "jumpButton" type="button"
+			onclick="activateJump()" style="display:none;" style="background-color:red;">Activate Double Jump</button>
+		<button id = "backButton" type="button"
+		onclick="goBack()" style="display:none;">Back</button>
+	<button id = "restartButton" type="button"
+	onclick="restart()" style="display: none;">Restart</button>
+<button id = "menuButton" type="button"
+onclick="menu()" style="display: none;" >Menu</button>
+
+<img id="newBackground" onclick="switchBackground()" style="display:none;" height="100" width="100" src="images/Background_Calm_River.jpg">
+<img id="newCharacter" onclick="switchCharacter()" style="display:none;" height="100" width="100" src="images/__Bandit02.png">
+<div id="achievement1" style="display: none;">
+<h1 id="achievementText1">You have unlocked a new background!</h1>
+<img id="achievementPic1" src="images/Background_Calm_River.jpg">
+</div>
+<div id="achievement2" style="display: none;">
+<h1 id="achievementText1">You have unlocked a new character!</h1>
+<img id="achievementPic1" src="images/__Bandit02.png">
+</div>
+</div>
+<img id="monster" height="0" width="0" src="images/frame-1.png">
+<img id="1" height="0" width="0" src="images/1.png">
+<img id="2" height="0" width="0" src="images/2.png">
+<img id="3" height="0" width="0" src="images/3.png">
+<img id="4" height="0" width="0" src="images/4.png">
+<img id="5" height="0" width="0" src="images/5.png">
+<img id="bakgrund" height="0" width="0" src="images/background.png">
+<img id="char0" height="0" width="0" src="images/2D_SM02_Run_000.png">
+<img id="char1" height="0" width="0" src="images/2D_SM02_Run_001.png">
+<img id="char2" height="0" width="0" src="images/2D_SM02_Run_002.png">
+<img id="char3" height="0" width="0" src="images/2D_SM02_Run_003.png">
+<img id="char4" height="0" width="0" src="images/2D_SM02_Run_004.png">
+<img id="char5" height="0" width="0" src="images/2D_SM02_Run_005.png">
+<img id="char6" height="0" width="0" src="images/2D_SM02_Run_006.png">
+<img id="char7" height="0" width="0" src="images/2D_SM02_Run_007.png">
+<img id="death0" height="0" width="0" src="images/0Death.png">
+<img id="death1" height="0" width="0" src="images/1Death.png">
+<img id="death2" height="0" width="0" src="images/2Death.png">
+<img id="death3" height="0" width="0" src="images/3Death.png">
+<img id="death4" height="0" width="0" src="images/4Death.png">
+<img id="death5" height="0" width="0" src="images/5Death.png">
+<img id="death6" height="0" width="0" src="images/6Death.png">
+<img id="death7" height="0" width="0" src="images/7Death.png">
+<img id="Death0" height="0" width="0" src="images/__Bandit02_Die_000.png">
+<img id="Death1" height="0" width="0" src="images/__Bandit02_Die_001.png">
+<img id="Death2" height="0" width="0" src="images/__Bandit02_Die_002.png">
+<img id="Death3" height="0" width="0" src="images/__Bandit02_Die_003.png">
+<img id="Death4" height="0" width="0" src="images/__Bandit02_Die_004.png">
+<img id="Death5" height="0" width="0" src="images/__Bandit02_Die_005.png">
+<img id="Death6" height="0" width="0" src="images/__Bandit02_Die_006.png">
+<img id="Death7" height="0" width="0" src="images/__Bandit02_Die_007.png">
+<img id="charjump" height="0" width="0" src="images/2D_SM02_JumpUP_000.png">
+<img id="charland" height="0" width="0" src="images/2D_SM02_FallDown_000.png">
+<img id="character" height="0" width="0" src="images/Character2.png">
+<img id="spikar" height="0" width="0" src="images/spikar.png">
+
+<script>
+var canvas;  
+var canvasContext;
+var blockSize = 60; //Storlek på blocken
+var blockY1=600-blockSize; //Var det första blocket ritas ut i y-led
+var blockX=800; //Var det första blocket ritas ut i X-led
+var blockSpeedX=-2; //Hastigheten på blocken
+var blockSpeedup=-0.0005; //Hur mycket hastigheten på blocken acceleras.
+var blockArray= {}; //En Array som innehåller alla block
+var characterX=100; //Var karaktären kommer vara i X-led
+var characterY=440;//Var karaktären börjar i Y-led (på marken)
+var characterSpeed=0; //Variabel som beskriver karaktärens hastighet i Y-led
+var flyingSpeed=4; //Hastigheten på monstrerna som flyger upp och ned
+var gravity = 0.25; //Variabel för gravitationen
+var jump = false; //Boolean för om karaktären befinner sig i luften eller inte
+var bakgrund = document.getElementById("bakgrund"); 
+var blåblock = document.getElementById("1"); 
+var orangeblock = document.getElementById("2");
+var grönblock = document.getElementById("3");
+var brunblock = document.getElementById("4");
+var lavablock = document.getElementById("5");
+var character = document.getElementById("character");
+var spikar = document.getElementById("spikar");
+var monster =document.getElementById("monster");
+var interval =""; //Variabel för ett interval
+var animation=""; //Variabel för ett interval
+var score =0; //Variabel för scoret i högra hörnet
+var scorestr = ""; //Variabel för scoret i string (så att det kan ritas upp) 
+var spikadd = 0; //Variabel som räknar antalet spikar i rad
+var randomspike=0; //Variabel som indikerar var spikar ska hamna
+var characterImg=0; //Variabel som används i rörande karaktär
+var jumpcheck=1; //variabel som avgör hur många hopp man får göra
+var jumpvar=0; //variabel som avgör hur många hopp som gjorts i rad
+var background=0; //Variabel som visar vilken bakgrund som är
+var characterSelect=0; //Variabel som visar vilken karaktär du valt
+var deathAnimations = 0; //Variabel som används i dödsanimation
+var lavavar=0; //Variabel som används när lavan ska ritas upp
+var flyingfiends=0; //Variabel som används vid randomizingen av flygande monster
+var monsterImg=1; //Variabel som används vid monsterns rörelse
+var flyingArray={}; //Array för monsterna
+var monsterjumpBoolean=true; //Boolean för hopp på flygande monster
+var backgroundBoolean=false; //Boolean för val av bakgrund
+var characterBoolean=false; //Boolean för val av karaktär
+var achievement1=true; //Boolean för om achievment 1 är uppnåt
+var achievement2=true; //Bollean för om achievement 2 är uppnåt
+
+//Funktion som startar igång alla olika andra funktioner som används i spelet, 
+//den startar alla dessa olika funktioner i olika interval. Den visar canvas och döljer också knapparna i menyn
+function canvasstart(){
+document.getElementById("startBakgrund").style.display = "none";
+hideFirstButtons();
+document.getElementById("gameCanvas").style.display = "inline";
+canvas = document.getElementById("gameCanvas");
+canvasContext = canvas.getContext("2d");
+generateLevel();
+interval=setInterval(function(){
+moveEverything();
+characterEvents();
+scores();
+}
+,1000/60);
+animation=setInterval(function(){
+characterAnimation();
+}
+,1000/40);
+monsteranimation=setInterval(function(){
+monsterAnimation();
+}
+,1000/20);
+drawing=setInterval(function(){
+drawEverything();
+}
+,1000/60);
+}
+//Knapplysnare för knappnedtryckning
+window.addEventListener("keydown", keyDownHandler, true);
+//Funktion som får karaktärens hastighet i Y-led till -10 alltså hoppa ifall mellanslag är nedtryckt och jumpvar är mindre än jumpcheck. 
+	function keyDownHandler(event) {
+	if (jumpvar<jumpcheck){
+	var keyCode = event.keyCode; 
+	if (keyCode==32){characterSpeed=-10;jump=true;jumpvar+=1;}
+	}}
+
+//hoppet på monster, gör karaktärens hastighet i Y-led till -8 så att karaktären hoppar.
+function monsterjump(){
+characterSpeed=-8;
+jump=true;
+}
+
+//Konstruktor för blocken, använder position(x,y), bild (färg) och blocktyp (med eller utan spikar)
+function block(x,y,bild,blocktyp){
+this.x=x;
+this.y=y;
+this.bild=bild;
+this.blocktyp=blocktyp;
+}
+//Funktion som genererar och skapar 400 block (objekt) i olika färger,spikar och monster, med hjälp av Math.random, kallar på konstruktorn. Lagrar ifall det är spikar i variabeln blocktyp.
+function generateLevel(){
+for(i=0;i<400;i++){
+var bild = "";
+var blocktyp=0;
+var random=(Math.floor(Math.random()*5)+1);
+var random2=(Math.floor(Math.random()*4)+1);
+if (random==1){bild =blåblock;blocktyp=0;randomspike=0;}
+if (random==2){bild=orangeblock;blocktyp=1;randomspike+=1;}
+if (random==3){bild=grönblock;blocktyp=0;randomspike=0;}
+if (random==4){bild =brunblock;blocktyp=0;randomspike=0;}
+if (random==5&&random2>1){bild =lavablock;blocktyp=0;randomspike+=1;}
+if (random==5&&random2==1){bild=orangeblock;blocktyp=0;randomspike=0;}
+if (random==2&&randomspike==3||random==5&&randomspike==3){bild=blåblock;blocktyp=0;randomspike=0;}
+if (random==1&&random2==1){flyingArray[flyingfiends]=new flyingObject(blockX,100);flyingfiends+=1;}
+blockArray[i]=new block(blockX,blockY1,bild,blocktyp);
+blockX+=blockSize;
+}
+}
+//Flygande hinder, konstruktor för flygande monstern 
+function flyingObject(x,y){
+this.x=x;
+this.y=y;
+}
+
+//Byter mellan 4 olika bilder i ett visst interval, får det se ut som att monstret flyger. Ändrar sourcen på monster mellan 4 olika bilder.
+function monsterAnimation(){
+document.getElementById("monster").src="images/frame-" + monsterImg +".png";
+monsterImg+=1;
+if (monsterImg==5){
+monsterImg=1;
+}
+}
+
+//Funktion som byter mellan alla bilder som karaktären har för att få honom att se ut att springa och hoppa och landa.
+//Ifall karaktären är i luften och hastigheten är negativ har den hoppanimationen, annars land.
+function characterAnimation(){
+if (jump){characterId="charjump";
+if (characterSpeed>0){characterId="charland";
+}
+}
+//Byter mellan 7 bilder, så att det ser ut som att karaktären rör sig.
+else{
+characterImg+=1;
+if (characterImg>7){characterImg=0;}
+characterId="char"+characterImg;
+}
+character = document.getElementById(characterId);
+}
+
+
+//Funktion som rör alla block i xled med blockSpeedX, rör Flygande monstrena i xled med samma hastighet och i y-led med flyingSpeed.
+//Rör också karaktären i Y-led efter hopp mha characterSpeed och gravity, bildas en kaströrelse.
+function moveEverything(){
+blockSpeedX = blockSpeedX+blockSpeedup;
+for (i=0;i<400;i++){
+blockArray[i].x=blockArray[i].x+blockSpeedX;
+}
+for (i=0;i<flyingfiends;i++){
+flyingArray[i].x=flyingArray[i].x+blockSpeedX;
+flyingArray[i].y+=flyingSpeed;
+}
+if (flyingArray[0].y>480||flyingArray[0].y<40){
+flyingSpeed=-flyingSpeed;
+}
+
+if (jump){
+characterSpeed+=gravity;
+characterY+=characterSpeed;
+if (characterY>438){characterY=440;
+jump=false;jumpvar=0;monsterjumpBoolean=true;
+}
+}
+}
+
+//Ökar score i högra hörnet med 0.1 för varje gång den blir kallad. Lagrar värdet i scorestr.
+//Kontrollerar också ifall score är 50 eller 200 för att isådanafall displaya achievement unlocked, döljer sedan det efter 50 score till.
+function scores(){
+score +=0.1;
+var scores = Math.floor(score);
+scorestr = scores.toString();
+if (scores==50&&achievement1){
+backgroundBoolean=true;
+document.getElementById("newBackground").setAttribute("style", "background-color:MediumSeaGreen;");
+document.getElementById("newBackground").style.display = "none";
+document.getElementById("achievement1").style.display = "inline";
+achievement1=false;
+}
+if (scores==200&&achievement2){
+characterBoolean=true;
+document.getElementById("newCharacter").setAttribute("style", "background-color:MediumSeaGreen;");
+document.getElementById("newCharacter").style.display = "none";
+document.getElementById("achievement2").style.display = "inline";
+achievement2=false;
+}
+if (scores==100){
+document.getElementById("achievement1").style.display = "none";
+}
+if (scores==250){
+document.getElementById("achievement2").style.display = "none";
+}
+}
+
+//Registrerar och kollar med långa if-satser om karaktären står på en spik eller monster att isf döda honom, eller hoppa.
+function characterEvents(){
+for (i=0;i<400;i++){
+if(characterX+42>blockArray[i].x&&characterX-15<blockArray[i].x&&characterY+147>blockArray[i].y&&blockArray[i].blocktyp==1||characterX+42>blockArray[i].x&&characterX-15<blockArray[i].x&&characterY+117>blockArray[i].y&&blockArray[i].bild==lavablock){
+dying();
+}
+}
+for(i=0;i<flyingfiends;i++){
+if (characterX+52>flyingArray[i].x&&characterX-25<flyingArray[i].x&&characterY+120>flyingArray[i].y&&characterY-25<flyingArray[i].y){
+dying();
+}
+if (characterX+52>flyingArray[i].x&&characterX-25<flyingArray[i].x&&characterY+140>flyingArray[i].y&&characterY+120<flyingArray[i].y){
+monsterjump();
+}
+}
+}
+
+//Funktion som stannar  alla interval förutom ritintervalen (gör så att funktioner slutas kallas) och kallar på funktionen death animationz som sköter dödsanimationen.
+function dying(){
+deathAnimation=setInterval(function(){
+deathAnimationz();
+},1000/15);
+clearInterval(interval);clearInterval(animation);clearInterval(monsteranimation);
+}
+
+//Dödsanimationen, byter mellan 7 bilder för att skapa en dödsanimation. När den har gått igenom alla sju stoppas ritintervalet och dödsanimationsintevalet. 
+//Sedan ritas texten you died ut på canvas, samt restart och menu knapparna visas.
+function deathAnimationz(){
+if (deathAnimations<=7){
+if(characterSelect==1){
+deathPics="Death"+deathAnimations;
+}
+if(characterSelect==0){
+deathPics="death"+deathAnimations;
+}
+character = document.getElementById(deathPics);
+deathAnimations+=1;
+}
+else{clearInterval(deathAnimation);clearInterval(drawing);canvasContext.font = "60px Lucida Console";canvasContext.fillText("You Died",255,240);document.getElementById("restartButton").style.display = "inline";
+document.getElementById("menuButton").style.display = "inline";}
+}
+
+//Funktion som kallar vad som ska ritas ut på canvas
+//Börjar med att cleara canvas innan den sedan kallar på att rita ut block och spikar, ser till att bara 2 kan ritas i rad.
+//Kallar sedan på att rita ut monstret och karaktären och score.
+function drawEverything(){
+colorImg(0,0,canvas.width,canvas.height,bakgrund);
+for (i=0;i<400;i++){
+if (spikadd!=2&&blockArray[i].blocktyp==1){
+colorImg(blockArray[i].x,blockArray[i].y-45,blockSize,blockSize,spikar);spikadd+=1;
+}
+else {spikadd=0;}
+colorImg(blockArray[i].x,blockArray[i].y,blockSize,blockSize,blockArray[i].bild);
+}
+for (i=0;i<flyingfiends;i++){
+colorImg(flyingArray[i].x,flyingArray[i].y-45,80,blockSize,monster);
+}
+colorImg(characterX,characterY,100,100,character);
+canvasContext.font = "30px Arial"; 
+canvasContext.fillText(scorestr,700,60);
+}
+//Function som ritar ut alla föremål på kanvas efter ha blivit kallad.
+function colorImg(x,y,width,height,typ){
+canvasContext.drawImage(typ,x,y,width,height);
+}
+
+//Restartar spelet, kallar på funktionen restart game samt döljer meny knappar/ alternativt achievement
+function restart(){
+clearGame();
+document.getElementById("restartButton").style.display = "none";
+document.getElementById("menuButton").style.display = "none";
+document.getElementById("achievement1").style.display = "none";
+document.getElementById("achievement2").style.display = "none";
+canvasstart();
+
+}
+
+//Resetar spelvariabler som lagrats och clearar canvas
+function clearGame(){
+colorImg(0,0,canvas.width,canvas.height,bakgrund);
+jump=false;
+blockY1=600-blockSize;
+blockX=800;
+blockSpeedX=-2;
+blockSpeedup=-0.0005;
+blockArray= {};
+characterX=100;
+characterY=440;
+score =0;
+deathAnimations = 0;
+jumpvar=0;
+flyingfiends=0;
+}
+
+//Knappfunktioner
+
+//Öppnar shop, döljer startknapparna och visar shopknapparna.
+function openShop(){
+hideFirstButtons();
+document.getElementById("backButton").style.display = "inline";
+document.getElementById("newBackground").style.display = "inline";
+document.getElementById("newCharacter").style.display = "inline";
+}
+
+//Funktion som döljer startknapparna
+function hideFirstButtons(){
+document.getElementById("startButton").style.display = "none";
+document.getElementById("optionsButton").style.display = "none";
+document.getElementById("shopButton").style.display = "none";
+}
+//Karaktärsbyte, Ifall man låst upp karaktär via achievment kan man byta karaktär
+//Då byts samtliga bilder ut mot den andra karaktären och knappen blir röd.
+//Klickar man igen blir knappen grön igen och bilderna byts tillbaka.
+function switchCharacter (){
+if (characterBoolean){
+if (characterSelect==1){
+document.getElementById("newCharacter").setAttribute("style", "background-color:MediumSeaGreen;");
+for (i=0;i<8;i++){
+document.getElementById("char"+i).src="images/2D_SM02_Run_00"+i+".png";
+}
+document.getElementById("charjump").src="images/2D_SM02_JumpUP_000.png";
+document.getElementById("charland").src="images/2D_SM02_FallDown_000.png";
+characterSelect=0;
+}
+else {
+document.getElementById("newCharacter").setAttribute("style", "background-color:red;");
+for (i=0;i<8;i++){
+document.getElementById("char"+i).src="images/__Bandit02_Walk_00"+i+".png";
+}
+document.getElementById("charjump").src="images/__Bandit02_JumpUP_000.png";
+document.getElementById("charland").src="images/__Bandit02_FallDown_000.png";
+characterSelect=1;
+}
+}
+}
+//Bakgrundsbyte, ifall man låst upp backgrunden och trycker på knappen blir den röd och backgrunden byts.
+//Klickar man på den igen ändras det tillbaka igen
+function switchBackground(){
+if (backgroundBoolean){
+if (background==1){
+document.getElementById("newBackground").setAttribute("style", "background-color:MediumSeaGreen;");
+document.getElementById("bakgrund").src="images/background.png";
+background=0;
+}
+else {
+document.getElementById("newBackground").setAttribute("style", "background-color:red;");
+document.getElementById("bakgrund").src="images/Background_Calm_River.jpg";
+background=1;}
+}}
+//Tillbaka till huvudmenyn, visar startknappar och döljer alla andra
+function goBack(){
+document.getElementById("startButton").style.display = "inline";
+document.getElementById("optionsButton").style.display = "inline";
+document.getElementById("shopButton").style.display = "inline";
+document.getElementById("jumpButton").style.display = "none";
+document.getElementById("backButton").style.display = "none";
+document.getElementById("newBackground").style.display = "none";
+document.getElementById("newCharacter").style.display = "none";
+}
+//Dubbelhoppknapp, ifall den trycks ner ändras jumpcheck och 2 hopp tillåts istället för ett, gör också knappen grön, tvärt om ifall den trycks ner igen.
+function activateJump(){
+if (jumpcheck==2){
+jumpcheck=1;
+document.getElementById("jumpButton").setAttribute("style", "background-color: MediumSeaGreen;");
+}
+else{
+document.getElementById("jumpButton").setAttribute("style", "background-color: red;");
+jumpcheck=2;}
+} 
+//Går till menyn, döljer restar och menubutton, achievements, och visar menyknapparna. Samt resetar alla spelvariabler.
+function menu(){
+clearGame();
+document.getElementById("restartButton").style.display = "none";
+document.getElementById("menuButton").style.display = "none";
+document.getElementById("startButton").style.display = "inline";
+document.getElementById("optionsButton").style.display = "inline";
+document.getElementById("shopButton").style.display = "inline";
+document.getElementById("gameCanvas").style.display = "none";
+document.getElementById("startBakgrund").style.display = "inline";
+document.getElementById("achievement1").style.display = "none";
+document.getElementById("achievement2").style.display = "none";
+}
+//Går till options, döjer menyknapparna och visar hoppknappen och tillbakaknappen.
+function options(){
+hideFirstButtons();
+document.getElementById("jumpButton").style.display = "inline";
+document.getElementById("backButton").style.display = "inline";
+}
+//Att göra
+//Korta ner koden
+//Impossible Survival
+//Göra UI:n bättre
+//Fixa så att han inte blir mindre när han dör
+
+
+//((Bossfight))
+</script>
+
+</html>
